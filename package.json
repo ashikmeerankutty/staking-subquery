@@ -1,0 +1,31 @@
+{
+  "name": "stake-query",
+  "version": "0.1.0",
+  "description": "TThis subquery indexes historic staking data for validators and rank them",
+  "main": "dist/index.js",
+  "homepage": "https://github.com/ashikmeerankutty/staking-subquery",
+  "repository": "github:ashikmeerankutty/staking-subquery",
+  "scripts": {
+    "build": "tsc -b",
+    "prepack": "rm -rf dist && npm build",
+    "start:docker": "docker-compose pull && docker-compose up --remove-orphans",
+    "codegen": "./node_modules/.bin/subql codegen"
+  },
+  "files": [
+    "dist",
+    "schema.graphql",
+    "project.yaml"
+  ],
+  "author": "Jay Ji",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@polkadot/api": "6.4.1",
+    "@subql/cli": "0.15.0",
+    "@subql/types": "0.10.0",
+    "typescript": "4.4.4"
+  },
+  "dependencies": {
+    "axios": "^0.24.0",
+    "bignumber.js": "^9.0.1"
+  }
+}
