@@ -352,7 +352,7 @@ export const getReferendumInfo = async (index: any, info: any, api: any) => {
 
 export const getMultiReferendumsInfo = (ids: any, api: any) => {
   const referendumsInfos = ids.map(async (id) => {
-    return await api.query.democracy.referendumsInfo(id)
+    return await api.query.democracy.referendumsInfoOf(id)
   })
   return Promise.all(referendumsInfos);
 }
