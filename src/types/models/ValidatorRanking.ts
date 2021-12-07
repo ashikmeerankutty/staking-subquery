@@ -17,6 +17,8 @@ import {
 } from '../interfaces'
 
 
+
+
 export class ValidatorRanking implements Entity {
 
     constructor(id: string) {
