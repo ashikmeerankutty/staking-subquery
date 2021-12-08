@@ -93,14 +93,14 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
 
   // @ts-ignore
   proposals.forEach(({ seconds, proposer }) => {
-    participateInGovernance.push(proposer.toString());
+    participateInGovernance.push(proposer?.toString());
     seconds.forEach((accountId) =>
-      participateInGovernance.push(accountId.toString())
+      participateInGovernance.push(accountId?.toString())
     );
   });
   referendums.forEach(({ votes }) => {
     votes.forEach(({ accountId }) =>
-      participateInGovernance.push(accountId.toString())
+      participateInGovernance.push(accountId?.toString())
     );
   });
 
@@ -126,14 +126,14 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
 
   for (let i = 0; i < validatorsInfo.length; i++) {
     const validator: any = validatorsInfo[i];
-    const validatoRanking = new ValidatorRanking(validator.stashId.toString());
+    const validatoRanking = new ValidatorRanking(validator.stashId?.toString());
     console.log("validator", validator);
     const { active } = validator;
     const activeRating = active ? 2 : 0;
 
-    const stashAddress = validator.stashId.toString();
+    const stashAddress = validator.stashId?.toString();
 
-    const controllerAddress = validator.controllerId.toString();
+    const controllerAddress = validator.controllerId?.toString();
     const { verifiedIdentity, hasSubIdentity, name, identityRating } =
       parseIdentity(validator.identity);
 
@@ -157,7 +157,7 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
       : nominations.filter((nomination) =>
           nomination.targets.some(
             // @ts-ignore
-            (target) => target === validator.accountId.toString()
+            (target) => target === validator.accountId?.toString()
           )
         ).length;
 
@@ -170,14 +170,14 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
     const slashes =
       erasSlashes.filter(
         // @ts-ignore
-        ({ validators }) => validators[validator.accountId.toString()]
+        ({ validators }) => validators[validator.accountId?.toString()]
       ) || [];
     const slashed = slashes.length > 0;
     const slashRating = slashed ? 0 : 2;
 
     // commission
     const commission =
-      parseInt(validator.validatorPrefs.commission.toString(), 10) / 10000000;
+      parseInt(validator.validatorPrefs.commission?.toString(), 10) / 10000000;
 
     const commissionHistory = getCommissionHistory(
       validator.accountId,
@@ -200,20 +200,20 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
     const councilBacking = validator.identity?.parent
       ? councilVotes.some(
           // @ts-ignore
-          (vote) => vote[0].toString() === validator.accountId.toString()
+          (vote) => vote[0]?.toString() === validator.accountId?.toString()
         ) ||
         councilVotes.some(
           // @ts-ignore
-          (vote) => vote[0].toString() === validator.identity.parent.toString()
+          (vote) => vote[0]?.toString() === validator.identity.parent?.toString()
         )
       : councilVotes.some(
           // @ts-ignore
-          (vote) => vote[0].toString() === validator.accountId.toString()
+          (vote) => vote[0]?.toString() === validator.accountId?.toString()
         );
     const activeInGovernance = validator.identity?.parent
-      ? participateInGovernance.includes(validator.accountId.toString()) ||
-        participateInGovernance.includes(validator.identity.parent.toString())
-      : participateInGovernance.includes(validator.accountId.toString());
+      ? participateInGovernance.includes(validator.accountId?.toString()) ||
+        participateInGovernance.includes(validator.identity.parent?.toString())
+      : participateInGovernance.includes(validator.accountId?.toString());
     let governanceRating = 0;
     if (councilBacking && activeInGovernance) {
       governanceRating = 3;
@@ -235,11 +235,11 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
       if (eraPoints.validators[stashAddress]) {
         activeEras += 1;
         const points = parseInt(
-          eraPoints.validators[stashAddress].toString(),
+          eraPoints.validators[stashAddress]?.toString(),
           10
         );
         eraPointsHistory.push({
-          era: new BigNumber(era.toString()).toString(10),
+          era: new BigNumber(era.toString())?.toString(10),
           points,
         });
         if (validator.stakingLedger.claimedRewards.includes(era)) {
@@ -262,38 +262,38 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
         );
         const eraOthersStake = eraTotalStake.minus(eraSelfStake);
         stakeHistory.push({
-          era: new BigNumber(era.toString()).toString(10),
-          self: eraSelfStake.toString(10),
-          others: eraOthersStake.toString(10),
-          total: eraTotalStake.toString(10),
+          era: new BigNumber(era.toString())?.toString(10),
+          self: eraSelfStake?.toString(10),
+          others: eraOthersStake?.toString(10),
+          total: eraTotalStake?.toString(10),
         });
         eraPerformance =
           (points * (1 - commission / 100)) /
           // token decimals of 10
           eraTotalStake.div(new BigNumber(10).pow(10)).toNumber();
         performanceHistory.push({
-          era: new BigNumber(era.toString()).toString(10),
+          era: new BigNumber(era?.toString())?.toString(10),
           performance: eraPerformance,
         });
       } else {
         // validator was not active in that era
         eraPointsHistory.push({
-          era: new BigNumber(era.toString()).toString(10),
+          era: new BigNumber(era?.toString())?.toString(10),
           points: 0,
         });
         stakeHistory.push({
-          era: new BigNumber(era.toString()).toString(10),
+          era: new BigNumber(era?.toString())?.toString(10),
           self: 0,
           others: 0,
           total: 0,
         });
         performanceHistory.push({
-          era: new BigNumber(era.toString()).toString(10),
+          era: new BigNumber(era?.toString())?.toString(10),
           performance: 0,
         });
       }
       payoutHistory.push({
-        era: new BigNumber(era.toString()).toString(10),
+        era: new BigNumber(era?.toString())?.toString(10),
         status: eraPayoutState,
       });
       // total performance
@@ -307,7 +307,7 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
     );
     const eraPointsHistoryTotals: any = [];
     erasPoints.forEach(({ eraPoints }: any) => {
-      eraPointsHistoryTotals.push(parseInt(eraPoints.toString(), 10));
+      eraPointsHistoryTotals.push(parseInt(eraPoints?.toString(), 10));
     });
     const eraPointsHistoryTotalsSum = eraPointsHistoryTotals.reduce(
       (total, num) => total + num,
@@ -325,10 +325,10 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
 
     // stake
     const selfStake = active
-      ? new BigNumber(validator.exposure.own.toString())
-      : new BigNumber(validator.stakingLedger.total.toString());
+      ? new BigNumber(validator.exposure.own?.toString())
+      : new BigNumber(validator.stakingLedger.total?.toString());
     const totalStake = active
-      ? new BigNumber(validator.exposure.total.toString())
+      ? new BigNumber(validator.exposure.total?.toString())
       : selfStake;
     const otherStake = active ? totalStake.minus(selfStake) : new BigNumber(0);
 
@@ -384,9 +384,9 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
     validatoRanking.activeInGovernance = activeInGovernance;
     validatoRanking.governanceRating = governanceRating;
     validatoRanking.payoutHistory = payoutHistory;
-    validatoRanking.selfStake = selfStake.toString();
-    validatoRanking.otherStake = otherStake.toString();
-    validatoRanking.totalStake = totalStake.toString();
+    validatoRanking.selfStake = selfStake?.toString();
+    validatoRanking.otherStake = otherStake?.toString();
+    validatoRanking.totalStake = totalStake?.toString();
     validatoRanking.stakeHistory = stakeHistory;
     validatoRanking.totalRating = totalRating;
     validatoRanking.identity = identity;
