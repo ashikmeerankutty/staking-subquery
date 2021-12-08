@@ -30,6 +30,8 @@ export class ValidatorRanking implements Entity {
 
     public active?: boolean;
 
+    public index?: number;
+
     public activeRating?: number;
 
     public name?: string;

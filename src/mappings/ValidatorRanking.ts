@@ -126,7 +126,8 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
 
   for (let i = 0; i < validatorsInfo.length; i++) {
     const validator: any = validatorsInfo[i];
-    const validatoRanking = new ValidatorRanking(validator.stashId?.toString());
+    const validatorRanking = new ValidatorRanking(validator.accountId.toString());
+    validatorRanking.index = i
     console.log("validator", validator);
     const { active } = validator;
     const activeRating = active ? 2 : 0;
@@ -353,44 +354,44 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
       governanceRating +
       payoutRating;
 
-    validatoRanking.active = active;
-    validatoRanking.activeRating = activeRating;
-    validatoRanking.name = name;
-    validatoRanking.hasSubIdentity = hasSubIdentity;
-    validatoRanking.subAccountsRating = subAccountsRating;
-    validatoRanking.verifiedIdentity = verifiedIdentity;
-    validatoRanking.identityRating = identityRating;
-    validatoRanking.stashAddress = stashAddress;
-    validatoRanking.controllerAddress = controllerAddress;
-    validatoRanking.partOfCluster = partOfCluster;
-    validatoRanking.clusterName = clusterName;
-    validatoRanking.clusterMembers = clusterMembers;
-    validatoRanking.showClusterMember = showClusterMember;
-    validatoRanking.nominators = nominators;
-    validatoRanking.nominatorsRating = nominatorsRating;
-    validatoRanking.commission = commission;
-    validatoRanking.commissionHistory = commissionHistory;
-    validatoRanking.commissionRating = commissionRating;
-    validatoRanking.activeEras = activeEras;
-    validatoRanking.eraPointsHistory = eraPointsHistory;
-    validatoRanking.eraPointsPercent = eraPointsPercent?.toString() || "";
-    validatoRanking.eraPointsRating = eraPointsRating;
-    validatoRanking.performance = performance;
-    validatoRanking.performanceHistory = performanceHistory;
-    validatoRanking.slashed = slashed;
-    validatoRanking.slashRating = slashRating;
-    validatoRanking.slashes = slashes;
-    validatoRanking.councilBacking = councilBacking;
-    validatoRanking.activeInGovernance = activeInGovernance;
-    validatoRanking.governanceRating = governanceRating;
-    validatoRanking.payoutHistory = payoutHistory;
-    validatoRanking.selfStake = selfStake?.toString();
-    validatoRanking.otherStake = otherStake?.toString();
-    validatoRanking.totalStake = totalStake?.toString();
-    validatoRanking.stakeHistory = stakeHistory;
-    validatoRanking.totalRating = totalRating;
-    validatoRanking.identity = identity;
+    validatorRanking.active = active;
+    validatorRanking.activeRating = activeRating;
+    validatorRanking.name = name;
+    validatorRanking.hasSubIdentity = hasSubIdentity;
+    validatorRanking.subAccountsRating = subAccountsRating;
+    validatorRanking.verifiedIdentity = verifiedIdentity;
+    validatorRanking.identityRating = identityRating;
+    validatorRanking.stashAddress = stashAddress;
+    validatorRanking.controllerAddress = controllerAddress;
+    validatorRanking.partOfCluster = partOfCluster;
+    validatorRanking.clusterName = clusterName;
+    validatorRanking.clusterMembers = clusterMembers;
+    validatorRanking.showClusterMember = showClusterMember;
+    validatorRanking.nominators = nominators;
+    validatorRanking.nominatorsRating = nominatorsRating;
+    validatorRanking.commission = commission;
+    validatorRanking.commissionHistory = commissionHistory;
+    validatorRanking.commissionRating = commissionRating;
+    validatorRanking.activeEras = activeEras;
+    validatorRanking.eraPointsHistory = eraPointsHistory;
+    validatorRanking.eraPointsPercent = eraPointsPercent?.toString() || "";
+    validatorRanking.eraPointsRating = eraPointsRating;
+    validatorRanking.performance = performance;
+    validatorRanking.performanceHistory = performanceHistory;
+    validatorRanking.slashed = slashed;
+    validatorRanking.slashRating = slashRating;
+    validatorRanking.slashes = slashes;
+    validatorRanking.councilBacking = councilBacking;
+    validatorRanking.activeInGovernance = activeInGovernance;
+    validatorRanking.governanceRating = governanceRating;
+    validatorRanking.payoutHistory = payoutHistory;
+    validatorRanking.selfStake = selfStake?.toString();
+    validatorRanking.otherStake = otherStake?.toString();
+    validatorRanking.totalStake = totalStake?.toString();
+    validatorRanking.stakeHistory = stakeHistory;
+    validatorRanking.totalRating = totalRating;
+    validatorRanking.identity = identity;
 
-    await validatoRanking.save();
+    await validatorRanking.save();
   }
 }

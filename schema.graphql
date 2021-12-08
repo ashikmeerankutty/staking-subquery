@@ -37,6 +37,7 @@ type Identity @jsonField {
 type ValidatorRanking @entity {
   id: ID! # AccountId
   active: Boolean
+  index: Int
   activeRating: Int
   name: String
   hasSubIdentity: Boolean
