@@ -124,7 +124,7 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
 
   const clusters: any = [];
 
-  validatorsInfo.slice(0, 5).forEach(async (validator: any) => {
+  validatorsInfo.forEach(async (validator: any) => {
     const validatoRanking = new ValidatorRanking(validator.stashId.toString());
     console.log("validator", validator);
     const { active } = validator;
