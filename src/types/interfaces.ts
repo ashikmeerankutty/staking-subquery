@@ -2,67 +2,58 @@
 
 // Auto-generated , DO NOT EDIT
 
-export interface CommissionHistory {
+export interface Others {
 
-    era?: string;
+    who?: string;
+
+    value?: string;
+
+}
+
+
+export interface ValidatorPrefs {
 
     commission?: string;
 
-}
-
-
-export interface EraPointsHistory {
-
-    era?: string;
-
-    points?: number;
-
-}
-
-
-export interface PerformanceHistory {
-
-    era?: string;
-
-    performance?: number;
-
-}
-
-
-export interface PayoutHistory {
-
-    era?: string;
-
-    status?: string;
-
-}
-
-
-export interface StakeHistory {
-
-    era?: string;
-
-    self?: string;
-
-    others?: string;
-
-    total?: string;
+    blocked?: boolean;
 
 }
 
 
 export interface IdentityField {
 
-    Identity?: Identity;
+    display?: string;
+
+    judgements?: string[];
+
+    legal?: string;
 
 }
 
 
 export interface Identity {
 
-    display?: string;
+    identity?: IdentityField;
 
-    legal?: string;
+}
+
+
+export interface Exposure {
+
+    total?: string;
+
+    own?: number;
+
+    others?: Others[];
+
+}
+
+
+export interface StrakingLedger {
+
+    total?: string;
+
+    claimedRewards?: number[];
 
 }
 

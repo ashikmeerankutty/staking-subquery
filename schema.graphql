@@ -1,77 +1,42 @@
-type CommissionHistory @jsonField {
-  era: String
+type Others @jsonField {
+  who: String
+  value: String
+}
+
+type ValidatorPrefs @jsonField {
   commission: String
-}
-
-type EraPointsHistory @jsonField {
-  era: String
-  points: Int
-}
-
-type PerformanceHistory @jsonField {
-  era: String
-  performance: Int
-}
-
-type PayoutHistory @jsonField {
-  era: String
-  status: String
-}
-
-type StakeHistory @jsonField {
-  era: String
-  self: String
-  others: String
-  total: String
+  blocked: Boolean
 }
 
 type IdentityField @jsonField {
-  Identity: Identity
-}
-
-type Identity @jsonField {
   display: String
+  judgements: [String]
   legal: String
 }
 
-type ValidatorRanking @entity {
-  id: ID! # AccountId
+type Identity @jsonField {
+  identity: IdentityField
+}
+
+type Exposure @jsonField {
+  total: String
+  own: Int
+  others: [Others]
+}
+
+type StrakingLedger @jsonField {
+  total: String
+  claimedRewards: [Int]
+}
+
+type ValidatorsInfo @entity {
+  id: ID!
+  accountId: String
+  controllerId: String
+  exposure: Exposure
+  identity: [Identity]
+  stashId: String
+  validatorPrefs: ValidatorPrefs
+  stakingLedger: StrakingLedger
   active: Boolean
-  activeRating: Int
-  name: String
-  hasSubIdentity: Boolean
-  subAccountsRating: Int
-  verifiedIdentity: Boolean
-  identityRating: Int
-  stashAddress: String
-  controllerAddress: String
-  partOfCluster: Boolean
-  clusterName: String
-  clusterMembers: Int
-  showClusterMember: Boolean
-  nominators: Int
-  nominatorsRating: Int
-  commission: Int
-  commissionRating: Int
-  activeEras: Int
-  eraPointsPercent: String
-  eraPointsRating: Int
-  performance: Int
-  slashed: Boolean
-  slashRating: Int
-  councilBacking: Boolean
-  activeInGovernance: Boolean
-  governanceRating: Int
-  payoutRating: Int
-  selfStake: String
-  otherStake: String
-  totalStake: String
-  totalRating: Int
-  stakeHistory: [StakeHistory]
-  payoutHistory: [PayoutHistory]
-  slashes: [String]
-  performanceHistory: [PerformanceHistory]
-  eraPointsHistory: [EraPointsHistory]
-  commissionHistory: [CommissionHistory]
-  identity: [IdentityField]
 }
