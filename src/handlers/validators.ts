@@ -1,5 +1,5 @@
 export const getValidatorAddresses = async (api: any) => {
-  return await api.query.staking.validators.keys();
+  return await api.query.session.validators();
 };
 
 export const getNominators = async (api: any) => {
