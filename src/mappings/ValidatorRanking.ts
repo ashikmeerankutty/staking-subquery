@@ -1,4 +1,6 @@
+import { ApiPromise } from "@polkadot/api";
 import { SubstrateEvent } from "@subql/types";
+import { WsProvider } from "@polkadot/rpc-provider";
 import BigNumber from "bignumber.js";
 import { getEraExposure } from "../handlers/eraExposure";
 import { getErasPoints } from "../handlers/erasPoints";
@@ -22,6 +24,7 @@ import { getValidatorAddresses } from "../handlers/validators";
 import { geVotes } from "../handlers/votes";
 import { ValidatorRanking } from "../types";
 
+
 // Flags to be filtered from UI
 const stakingQueryFlags = {
   withDestination: false,
@@ -32,7 +35,14 @@ const stakingQueryFlags = {
 };
 
 export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
+  // const api = await ApiPromise.create({ provider });
+  const sessionIndex = await api.query.session.currentIndex()
   const validatorAddresses = await getValidatorAddresses(api);
+  // for(let i=0; i< validatorAddresses.length; i++ ){
+  //   const validatorRanking = new ValidatorRanking(validatorAddresses[i].toString());
+  //   validatorRanking.index = sessionIndex.toString();
+  //   await validatorRanking.save();
+  // }
   const validatorsInfo = await Promise.all(
     // @ts-ignore
     validatorAddresses.map(async (authorityId) => {
@@ -127,7 +137,6 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
   for (let i = 0; i < validatorsInfo.length; i++) {
     const validator: any = validatorsInfo[i];
     const validatorRanking = new ValidatorRanking(validator.accountId.toString());
-    validatorRanking.index = i
     console.log("validator", validator);
     const { active } = validator;
     const activeRating = active ? 2 : 0;
