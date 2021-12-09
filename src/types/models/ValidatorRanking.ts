@@ -2,6 +2,20 @@
 import {Entity, FunctionPropertyNames} from "@subql/types";
 import assert from 'assert';
 
+import {
+    StakeHistory,
+
+    PayoutHistory,
+
+    PerformanceHistory,
+
+    EraPointsHistory,
+
+    CommissionHistory,
+
+    IdentityField,
+} from '../interfaces'
+
 
 
 
@@ -14,9 +28,83 @@ export class ValidatorRanking implements Entity {
 
     public id: string;
 
-    public accountId?: string;
+    public active?: boolean;
 
-    public index?: string;
+    public index?: number;
+
+    public activeRating?: number;
+
+    public name?: string;
+
+    public hasSubIdentity?: boolean;
+
+    public subAccountsRating?: number;
+
+    public verifiedIdentity?: boolean;
+
+    public identityRating?: number;
+
+    public stashAddress?: string;
+
+    public controllerAddress?: string;
+
+    public partOfCluster?: boolean;
+
+    public clusterName?: string;
+
+    public clusterMembers?: number;
+
+    public showClusterMember?: boolean;
+
+    public nominators?: number;
+
+    public nominatorsRating?: number;
+
+    public commission?: number;
+
+    public commissionRating?: number;
+
+    public activeEras?: number;
+
+    public eraPointsPercent?: string;
+
+    public eraPointsRating?: number;
+
+    public performance?: number;
+
+    public slashed?: boolean;
+
+    public slashRating?: number;
+
+    public councilBacking?: boolean;
+
+    public activeInGovernance?: boolean;
+
+    public governanceRating?: number;
+
+    public payoutRating?: number;
+
+    public selfStake?: string;
+
+    public otherStake?: string;
+
+    public totalStake?: string;
+
+    public totalRating?: number;
+
+    public stakeHistory?: StakeHistory[];
+
+    public payoutHistory?: PayoutHistory[];
+
+    public slashes?: string[];
+
+    public performanceHistory?: PerformanceHistory[];
+
+    public eraPointsHistory?: EraPointsHistory[];
+
+    public commissionHistory?: CommissionHistory[];
+
+    public identity?: IdentityField[];
 
 
     async save(): Promise<void>{
