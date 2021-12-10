@@ -2,5 +2,17 @@
 
 // Auto-generated , DO NOT EDIT
 
-export {ValidatorRanking} from "./ValidatorRanking"
+export {ValidatorsInfo} from "./ValidatorsInfo"
+
+export {EraSlashes} from "./EraSlashes"
+
+export {EraPreferences} from "./EraPreferences"
+
+export {EraPoints} from "./EraPoints"
+
+export {CouncilVotes} from "./CouncilVotes"
+
+export {Referendum} from "./Referendum"
+
+export {Proposal} from "./Proposal"
 

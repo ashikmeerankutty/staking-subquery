@@ -1,78 +1,41 @@
-type CommissionHistory @jsonField {
-  era: String
-  commission: String
+type ValidatorsInfo @entity {
+  id: ID!
+  accountId: String
 }
 
-type EraPointsHistory @jsonField {
-  era: String
-  points: Int
+type EraSlashes @entity {
+  id: ID!
+  validators: String
 }
 
-type PerformanceHistory @jsonField {
-  era: String
-  performance: Int
+type EraPreferences @entity {
+  id: ID!
+  validators: String
 }
 
-type PayoutHistory @jsonField {
-  era: String
-  status: String
+type EraPoints @entity {
+  id: ID!
+  eraPoints: String
+  validators: String
 }
 
-type StakeHistory @jsonField {
-  era: String
-  self: String
-  others: String
-  total: String
+type CouncilVotes @entity {
+  id: ID!
+  stake: String
+  votes: [String]
 }
 
-type IdentityField @jsonField {
-  Identity: Identity
+type Vote @jsonField {
+  accountId: String
 }
 
-type Identity @jsonField {
-  display: String
-  legal: String
+type Referendum @entity {
+  id: ID!
+  votes: [Vote]
 }
 
-type ValidatorRanking @entity {
-  id: ID! # AccountId
-  active: Boolean
-  index: Int
-  activeRating: Int
-  name: String
-  hasSubIdentity: Boolean
-  subAccountsRating: Int
-  verifiedIdentity: Boolean
-  identityRating: Int
-  stashAddress: String
-  controllerAddress: String
-  partOfCluster: Boolean
-  clusterName: String
-  clusterMembers: Int
-  showClusterMember: Boolean
-  nominators: Int
-  nominatorsRating: Int
-  commission: Int
-  commissionRating: Int
-  activeEras: Int
-  eraPointsPercent: String
-  eraPointsRating: Int
-  performance: Int
-  slashed: Boolean
-  slashRating: Int
-  councilBacking: Boolean
-  activeInGovernance: Boolean
-  governanceRating: Int
-  payoutRating: Int
-  selfStake: String
-  otherStake: String
-  totalStake: String
-  totalRating: Int
-  stakeHistory: [StakeHistory]
-  payoutHistory: [PayoutHistory]
-  slashes: [String]
-  performanceHistory: [PerformanceHistory]
-  eraPointsHistory: [EraPointsHistory]
-  commissionHistory: [CommissionHistory]
-  identity: [IdentityField]
+type Proposal @entity {
+  id: ID!
+  proposer: String
+  seconds: [String]
 }
