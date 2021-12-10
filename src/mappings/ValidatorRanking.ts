@@ -1,4 +1,6 @@
+import { ApiPromise } from "@polkadot/api";
 import { SubstrateEvent } from "@subql/types";
+import { WsProvider } from "@polkadot/rpc-provider";
 import BigNumber from "bignumber.js";
 import { getEraExposure } from "../handlers/eraExposure";
 import { getErasPoints } from "../handlers/erasPoints";
@@ -22,6 +24,7 @@ import { getValidatorAddresses } from "../handlers/validators";
 import { geVotes } from "../handlers/votes";
 import { CouncilVotes, EraPoints, EraPreferences, EraSlashes, Proposal, Referendum } from "../types";
 import { ValidatorsInfo } from "../types/models/ValidatorsInfo";
+
 
 // Flags to be filtered from UI
 const stakingQueryFlags = {
