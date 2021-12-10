@@ -38,3 +38,13 @@ dataSources:
           filter:
             module: session
             method: NewSession
+        - handler: handleEraPoints
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession
+        - handler: handleEraPrefs
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession

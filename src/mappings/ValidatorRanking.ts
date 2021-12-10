@@ -455,6 +455,37 @@ export async function handleEraSlashes() {
   }
 }
 
+export async function handleEraPrefs() {
+  const erasHistoric = await getEraHistoric(api, false);
+  const eraIndexes = erasHistoric.slice(
+    // 84 days history
+    Math.max(erasHistoric.length - 84, 0)
+  );
+
+  for (const eraIndex of eraIndexes) {
+    const eraPrefs = await getEraPrefs(api, eraIndex);
+    const eraPreference = new EraPreferences(eraPrefs.era.toString())
+    eraPreference.validators = JSON.stringify(eraPrefs.validators)
+    await eraPreference.save();
+  }
+}
+
+export async function handleEraPoints() {
+  const erasHistoric = await getEraHistoric(api, false);
+  const eraIndexes = erasHistoric.slice(
+    // 84 days history
+    Math.max(erasHistoric.length - 84, 0)
+  );
+
+  const erasPoints = await getErasPoints(eraIndexes, api);
+  for(const erasPoint of erasPoints) {
+    const eraPoints = new EraPoints(erasPoint.era.toString())
+    eraPoints.eraPoints = erasPoint.eraPoints.toString()
+    eraPoints.validators = JSON.stringify(erasPoint.validators)
+    await eraPoints.save()
+  }
+}
+
 export async function handleCouncilVotes() {
   const councilVotes = await geVotes(api);
   for(const councilVote of councilVotes) {
