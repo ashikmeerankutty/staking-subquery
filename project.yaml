@@ -6,15 +6,34 @@ schema: "./schema.graphql"
 
 network:
   endpoint: "wss://polkadot.api.onfinality.io/public-ws"
-  dictionary: "https://api.subquery.network/sq/subquery/dictionary-polkadot"
 
 dataSources:
   - name: runtime
     kind: substrate/Runtime
-    startBlock: 1
+    startBlock: 8000000
     mapping:
       handlers:
-        - handler: handleBlock
+        - handler: handleValidatorAddress
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession
+        - handler: handleEraSlashes
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession
+        - handler: handleCouncilVotes
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession
+        - handler: handleReferendums
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession
+        - handler: handleProposals
           kind: substrate/EventHandler
           filter:
             module: session

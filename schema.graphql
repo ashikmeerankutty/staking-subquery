@@ -1,42 +1,41 @@
-type Others @jsonField {
-  who: String
-  value: String
-}
-
-type ValidatorPrefs @jsonField {
-  commission: String
-  blocked: Boolean
-}
-
-type IdentityField @jsonField {
-  display: String
-  judgements: [String]
-  legal: String
-}
-
-type Identity @jsonField {
-  identity: IdentityField
-}
-
-type Exposure @jsonField {
-  total: String
-  own: Int
-  others: [Others]
-}
-
-type StrakingLedger @jsonField {
-  total: String
-  claimedRewards: [Int]
-}
-
 type ValidatorsInfo @entity {
   id: ID!
   accountId: String
-  controllerId: String
-  exposure: Exposure
-  identity: [Identity]
-  stashId: String
-  validatorPrefs: ValidatorPrefs
-  stakingLedger: StrakingLedger
-  active: Boolean
+}
+
+type EraSlashes @entity {
+  id: ID!
+  validators: String
+}
+
+type EraPreferences @entity {
+  id: ID!
+  validators: String
+}
+
+type EraPoints @entity {
+  id: ID!
+  eraPoints: String
+  validators: String
+}
+
+type CouncilVotes @entity {
+  id: ID!
+  stake: String
+  votes: [String]
+}
+
+type Vote @jsonField {
+  accountId: String
+}
+
+type Referendum @entity {
+  id: ID!
+  votes: [Vote]
+}
+
+type Proposal @entity {
+  id: ID!
+  proposer: String
+  seconds: [String]
 }

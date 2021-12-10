@@ -20,6 +20,7 @@ import {
 } from "../handlers/utils";
 import { getValidatorAddresses } from "../handlers/validators";
 import { geVotes } from "../handlers/votes";
+import { CouncilVotes, EraPoints, EraPreferences, EraSlashes, Proposal, Referendum } from "../types";
 import { ValidatorsInfo } from "../types/models/ValidatorsInfo";
 
 // Flags to be filtered from UI
@@ -31,13 +32,21 @@ const stakingQueryFlags = {
   withPrefs: true,
 };
 
-export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
+export async function handleValidatorAddress({
+  block,
+}: SubstrateEvent): Promise<void> {
   const validatorAddresses = await getValidatorAddresses(api);
 
-  for(let i = 0; i < validatorAddresses.length; i++) {
+  for (let i = 0; i < validatorAddresses.length; i++) {
     const authorityId = validatorAddresses[i];
     const validatorInfo = new ValidatorsInfo(authorityId.toString());
     validatorInfo.accountId = authorityId.toString();
+    // validatorInfo.controllerId = accountInfo.controllerId?.toString();
+    // validatorInfo.active = true;
+    // validatorInfo.exposure = accountInfo.exposure;
+    // validatorInfo.stakingLedger = accountInfo.stakingLedger;
+    // validatorInfo.stashId = accountInfo.stashId?.toString();
+    // validatorInfo.validatorPrefs = accountInfo.validatorPrefs;
     await validatorInfo.save();
   }
 
@@ -60,9 +69,6 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
   //     };
   //   })
   // );
-
-  
-  
 
   // validatorsInfos.slice(0, 1).forEach(async (validator: any) => {
   //   try {
@@ -418,3 +424,68 @@ export async function handleBlock({ block }: SubstrateEvent): Promise<void> {
   //   validatoRanking.save();
   // });
 }
+
+export async function handleEraSlashes() {
+  const erasHistoric = await getEraHistoric(api, false);
+  const eraIndexes = erasHistoric.slice(
+    // 84 days history
+    Math.max(erasHistoric.length - 84, 0)
+  );
+
+  for (const eraIndex of eraIndexes) {
+    const eraSlashes = await getEraSlashes(api, eraIndex);
+    const eraSlash = new EraSlashes(eraSlashes.era.toString())
+    eraSlash.validators = JSON.stringify(eraSlashes.validators)
+    await eraSlash.save();
+  }
+
+  for (const eraIndex of eraIndexes) {
+    const eraPrefs = await getEraPrefs(api, eraIndex);
+    const eraPreference = new EraPreferences(eraPrefs.era.toString())
+    eraPreference.validators = JSON.stringify(eraPrefs.validators)
+    await eraPreference.save();
+  }
+
+  const erasPoints = await getErasPoints(eraIndexes, api);
+  for(const erasPoint of erasPoints) {
+    const eraPoints = new EraPoints(erasPoint.era.toString())
+    eraPoints.eraPoints = erasPoint.eraPoints.toString()
+    eraPoints.validators = JSON.stringify(erasPoint.validators)
+    await eraPoints.save()
+  }
+}
+
+export async function handleCouncilVotes() {
+  const councilVotes = await geVotes(api);
+  for(const councilVote of councilVotes) {
+    const [id, data] = councilVote;
+    const {stake, votes} = data;
+    const councilVoteEntity = new CouncilVotes(id.toString());
+    councilVoteEntity.stake = stake.toString();
+    councilVoteEntity.votes = votes as unknown as string[];
+    await councilVoteEntity.save()
+  }
+}
+
+
+export async function handleReferendums() {
+  const referendums = await getReferendums(api);
+  for(const referendum of referendums) {
+    const {votes, index} = referendum;
+    const referendumEntity = new Referendum(index.toString());
+    referendumEntity.votes = votes;
+    await referendumEntity.save()
+  }
+}
+
+export async function handleProposals() {
+  const proposals = await getProposals(api);
+  for(const proposal of proposals) {
+    const {seconds, proposer} = proposal;
+    const proposalEntity = new Proposal(proposer.toString());
+    proposalEntity.proposer = proposer.toString();
+    proposalEntity.seconds = seconds;
+    await proposalEntity.save()
+  }
+}
+

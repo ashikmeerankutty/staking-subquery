@@ -2,16 +2,6 @@
 import {Entity, FunctionPropertyNames} from "@subql/types";
 import assert from 'assert';
 
-import {
-    Exposure,
-
-    Identity,
-
-    ValidatorPrefs,
-
-    StrakingLedger,
-} from '../interfaces'
-
 
 
 
@@ -25,20 +15,6 @@ export class ValidatorsInfo implements Entity {
     public id: string;
 
     public accountId?: string;
-
-    public controllerId?: string;
-
-    public exposure?: Exposure;
-
-    public identity?: Identity[];
-
-    public stashId?: string;
-
-    public validatorPrefs?: ValidatorPrefs;
-
-    public stakingLedger?: StrakingLedger;
-
-    public active?: boolean;
 
 
     async save(): Promise<void>{
