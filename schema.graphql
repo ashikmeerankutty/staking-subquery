@@ -1,7 +1,7 @@
 type Exposure @jsonField {
   total: String
   own: String
-  others: [Others]
+  others: Int
 }
 
 type Others @jsonField {

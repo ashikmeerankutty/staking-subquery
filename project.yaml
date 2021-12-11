@@ -48,3 +48,13 @@ dataSources:
           filter:
             module: session
             method: NewSession
+        - handler: handleNominations
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession
+        - handler: handleMaxNominatorRewardedPerValidator
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession

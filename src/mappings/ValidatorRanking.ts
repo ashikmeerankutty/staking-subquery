@@ -63,15 +63,10 @@ export async function handleValidatorAddress({
       validatorInfo.active = true;
       validatorInfo.controllerId = accountInfo.controllerId?.toString();
       const { total, own, others } = accountInfo.exposure;
-      validatorAddresses.exposure = {
+      validatorInfo.exposure = {
         total: total?.toString(),
         own: own,
-        others: others?.map((other) => {
-          return {
-            who: other.who?.toString(),
-            value: other.value.toString(),
-          };
-        }),
+        others: others ? others.length : 0
       };
       validatorInfo.stakingLedger = accountInfo.stakingLedger;
       validatorInfo.stashId = accountInfo.stashId?.toString();

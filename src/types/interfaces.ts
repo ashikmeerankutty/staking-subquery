@@ -8,7 +8,7 @@ export interface Exposure {
 
     own?: string;
 
-    others?: Others[];
+    others?: number;
 
 }
 
