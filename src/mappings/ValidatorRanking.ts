@@ -50,8 +50,15 @@ export async function handleValidatorAddress({
 
   for (let i = 0; i < validatorAddresses.length; i++) {
     const authorityId = validatorAddresses[i];
-    const validatorInfo = new ValidatorsInfo(authorityId.toString());
-    validatorInfo.accountId = authorityId.toString();
+    const accountInfo = await accountQuery(authorityId, stakingQueryFlags, api);
+    const validatorInfo = new ValidatorsInfo(accountInfo.accountId.toString());
+    validatorInfo.accountId = accountInfo.accountId;
+    validatorInfo.active = true
+    validatorInfo.controllerId = accountInfo.controllerId;
+    validatorInfo.exposure = accountInfo.exposure;
+    validatorInfo.stakingLedger = accountInfo.stakingLedger;
+    validatorInfo.stashId = accountInfo.stashId;
+    validatorInfo.validatorPrefs = accountInfo.validatorPrefs;
     // validatorInfo.controllerId = accountInfo.controllerId?.toString();
     // validatorInfo.active = true;
     // validatorInfo.exposure = accountInfo.exposure;

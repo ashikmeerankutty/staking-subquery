@@ -1,6 +1,35 @@
+type Exposure @jsonField {
+  total: String
+  own: String
+  others: [Others]
+}
+
+type Others @jsonField {
+  who: String
+  value: String
+}
+
+type StakingLedger @jsonField {
+  stash: String
+  total: Int
+  active: Int
+  claimedRewards: [Int]
+}
+
+type ValidatorPrefs @jsonField {
+  commission: String
+  blocked: Boolean
+}
+
 type ValidatorsInfo @entity {
   id: ID!
   accountId: String
+  controllerId: String
+  exposure: Exposure
+  stakingLedger: StakingLedger
+  stashId: String
+  validatorPrefs: ValidatorPrefs
+  active: Boolean
 }
 
 type EraSlashes @entity {
