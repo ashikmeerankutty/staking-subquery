@@ -22,9 +22,17 @@ import {
 } from "../handlers/utils";
 import { getValidatorAddresses } from "../handlers/validators";
 import { geVotes } from "../handlers/votes";
-import { CouncilVotes, EraPoints, EraPreferences, EraSlashes, Proposal, Referendum } from "../types";
-import { ValidatorsInfo } from "../types/models/ValidatorsInfo";
-
+import {
+  ValidatorsInfo,
+  CouncilVotes,
+  EraPoints,
+  EraPreferences,
+  EraSlashes,
+  MaxNominatorRewardedPerValidator,
+  Nomination,
+  Proposal,
+  Referendum,
+} from "../types";
 
 // Flags to be filtered from UI
 const stakingQueryFlags = {
@@ -437,24 +445,24 @@ export async function handleEraSlashes() {
 
   for (const eraIndex of eraIndexes) {
     const eraSlashes = await getEraSlashes(api, eraIndex);
-    const eraSlash = new EraSlashes(eraSlashes.era.toString())
-    eraSlash.validators = JSON.stringify(eraSlashes.validators)
+    const eraSlash = new EraSlashes(eraSlashes.era.toString());
+    eraSlash.validators = JSON.stringify(eraSlashes.validators);
     await eraSlash.save();
   }
 
   for (const eraIndex of eraIndexes) {
     const eraPrefs = await getEraPrefs(api, eraIndex);
-    const eraPreference = new EraPreferences(eraPrefs.era.toString())
-    eraPreference.validators = JSON.stringify(eraPrefs.validators)
+    const eraPreference = new EraPreferences(eraPrefs.era.toString());
+    eraPreference.validators = JSON.stringify(eraPrefs.validators);
     await eraPreference.save();
   }
 
   const erasPoints = await getErasPoints(eraIndexes, api);
-  for(const erasPoint of erasPoints) {
-    const eraPoints = new EraPoints(erasPoint.era.toString())
-    eraPoints.eraPoints = erasPoint.eraPoints.toString()
-    eraPoints.validators = JSON.stringify(erasPoint.validators)
-    await eraPoints.save()
+  for (const erasPoint of erasPoints) {
+    const eraPoints = new EraPoints(erasPoint.era.toString());
+    eraPoints.eraPoints = erasPoint.eraPoints.toString();
+    eraPoints.validators = JSON.stringify(erasPoint.validators);
+    await eraPoints.save();
   }
 }
 
@@ -467,8 +475,8 @@ export async function handleEraPrefs() {
 
   for (const eraIndex of eraIndexes) {
     const eraPrefs = await getEraPrefs(api, eraIndex);
-    const eraPreference = new EraPreferences(eraPrefs.era.toString())
-    eraPreference.validators = JSON.stringify(eraPrefs.validators)
+    const eraPreference = new EraPreferences(eraPrefs.era.toString());
+    eraPreference.validators = JSON.stringify(eraPrefs.validators);
     await eraPreference.save();
   }
 }
@@ -481,45 +489,65 @@ export async function handleEraPoints() {
   );
 
   const erasPoints = await getErasPoints(eraIndexes, api);
-  for(const erasPoint of erasPoints) {
-    const eraPoints = new EraPoints(erasPoint.era.toString())
-    eraPoints.eraPoints = erasPoint.eraPoints.toString()
-    eraPoints.validators = JSON.stringify(erasPoint.validators)
-    await eraPoints.save()
+  for (const erasPoint of erasPoints) {
+    const eraPoints = new EraPoints(erasPoint.era.toString());
+    eraPoints.eraPoints = erasPoint.eraPoints.toString();
+    eraPoints.validators = JSON.stringify(erasPoint.validators);
+    await eraPoints.save();
   }
 }
 
 export async function handleCouncilVotes() {
   const councilVotes = await geVotes(api);
-  for(const councilVote of councilVotes) {
+  for (const councilVote of councilVotes) {
     const [id, data] = councilVote;
-    const {stake, votes} = data;
+    const { stake, votes } = data;
     const councilVoteEntity = new CouncilVotes(id.toString());
     councilVoteEntity.stake = stake.toString();
     councilVoteEntity.votes = votes as unknown as string[];
-    await councilVoteEntity.save()
+    await councilVoteEntity.save();
   }
 }
 
-
 export async function handleReferendums() {
   const referendums = await getReferendums(api);
-  for(const referendum of referendums) {
-    const {votes, index} = referendum;
+  for (const referendum of referendums) {
+    const { votes, index } = referendum;
     const referendumEntity = new Referendum(index.toString());
     referendumEntity.votes = votes;
-    await referendumEntity.save()
+    await referendumEntity.save();
   }
 }
 
 export async function handleProposals() {
   const proposals = await getProposals(api);
-  for(const proposal of proposals) {
-    const {seconds, proposer} = proposal;
+  for (const proposal of proposals) {
+    const { seconds, proposer } = proposal;
     const proposalEntity = new Proposal(proposer.toString());
     proposalEntity.proposer = proposer.toString();
     proposalEntity.seconds = seconds;
-    await proposalEntity.save()
+    await proposalEntity.save();
   }
 }
 
+export async function handleNominations() {
+  const nominatorsGlobal = await api.query.staking.nominators.entries();
+  for (const nomination of nominatorsGlobal) {
+    const [key, nominations] = nomination;
+    const nominator = key.toHuman()[0];
+    const targets = nominations.toJSON()["targets"];
+    const nominatorEntity = new Nomination(nominator);
+    nominatorEntity.nominator = nominator;
+    nominatorEntity.targets = targets;
+    await nominatorEntity.save();
+  }
+}
+
+export async function handleMaxNominatorRewardedPerValidator() {
+  const { maxNominatorRewardedPerValidator } = await api.consts.staking;
+  const maxNominatorRewardedPerValidatorEnity =
+    new MaxNominatorRewardedPerValidator("1");
+  maxNominatorRewardedPerValidatorEnity.maxNominatorRewardedPerValidator =
+    maxNominatorRewardedPerValidator.toNumber();
+  await maxNominatorRewardedPerValidatorEnity.save();
+}

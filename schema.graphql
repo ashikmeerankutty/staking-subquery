@@ -39,3 +39,14 @@ type Proposal @entity {
   proposer: String
   seconds: [String]
 }
+
+type Nomination @entity {
+  id: ID!
+  nominator: String
+  targets: [String]
+}
+
+type MaxNominatorRewardedPerValidator @entity {
+  id: ID!
+  maxNominatorRewardedPerValidator: Int
+}
