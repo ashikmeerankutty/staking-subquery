@@ -16,3 +16,7 @@ export {Referendum} from "./Referendum"
 
 export {Proposal} from "./Proposal"
 
+export {Nomination} from "./Nomination"
+
+export {MaxNominatorRewardedPerValidator} from "./MaxNominatorRewardedPerValidator"
+
