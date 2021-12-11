@@ -49,23 +49,43 @@ export async function handleValidatorAddress({
   const validatorAddresses = await getValidatorAddresses(api);
 
   for (let i = 0; i < validatorAddresses.length; i++) {
-    const authorityId = validatorAddresses[i];
-    const accountInfo = await accountQuery(authorityId, stakingQueryFlags, api);
-    const validatorInfo = new ValidatorsInfo(accountInfo.accountId.toString());
-    validatorInfo.accountId = accountInfo.accountId;
-    validatorInfo.active = true
-    validatorInfo.controllerId = accountInfo.controllerId;
-    validatorInfo.exposure = accountInfo.exposure;
-    validatorInfo.stakingLedger = accountInfo.stakingLedger;
-    validatorInfo.stashId = accountInfo.stashId;
-    validatorInfo.validatorPrefs = accountInfo.validatorPrefs;
-    // validatorInfo.controllerId = accountInfo.controllerId?.toString();
-    // validatorInfo.active = true;
-    // validatorInfo.exposure = accountInfo.exposure;
-    // validatorInfo.stakingLedger = accountInfo.stakingLedger;
-    // validatorInfo.stashId = accountInfo.stashId?.toString();
-    // validatorInfo.validatorPrefs = accountInfo.validatorPrefs;
-    await validatorInfo.save();
+    try {
+      const authorityId = validatorAddresses[i];
+      const accountInfo = await accountQuery(
+        authorityId,
+        stakingQueryFlags,
+        api
+      );
+      const validatorInfo = new ValidatorsInfo(
+        accountInfo.accountId.toString()
+      );
+      validatorInfo.accountId = accountInfo.accountId.toString();
+      validatorInfo.active = true;
+      validatorInfo.controllerId = accountInfo.controllerId?.toString();
+      const { total, own, others } = accountInfo.exposure;
+      validatorAddresses.exposure = {
+        total: total?.toString(),
+        own: own,
+        others: others?.map((other) => {
+          return {
+            who: other.who?.toString(),
+            value: other.value.toString(),
+          };
+        }),
+      };
+      validatorInfo.stakingLedger = accountInfo.stakingLedger;
+      validatorInfo.stashId = accountInfo.stashId?.toString();
+      validatorInfo.validatorPrefs = accountInfo.validatorPrefs;
+      // validatorInfo.controllerId = accountInfo.controllerId?.toString();
+      // validatorInfo.active = true;
+      // validatorInfo.exposure = accountInfo.exposure;
+      // validatorInfo.stakingLedger = accountInfo.stakingLedger;
+      // validatorInfo.stashId = accountInfo.stashId?.toString();
+      // validatorInfo.validatorPrefs = accountInfo.validatorPrefs;
+      await validatorInfo.save();
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   // const validatorsInfos = await Promise.all(
