@@ -45,21 +45,6 @@ export async function handleEraSlashes() {
     eraSlash.validators = JSON.stringify(eraSlashes.validators);
     await eraSlash.save();
   }
-
-  for (const eraIndex of eraIndexes) {
-    const eraPrefs = await getEraPrefs(api, eraIndex);
-    const eraPreference = new EraPreferences(eraPrefs.era.toString());
-    eraPreference.validators = JSON.stringify(eraPrefs.validators);
-    await eraPreference.save();
-  }
-
-  const erasPoints = await getErasPoints(eraIndexes, api);
-  for (const erasPoint of erasPoints) {
-    const eraPoints = new EraPoints(erasPoint.era.toString());
-    eraPoints.eraPoints = erasPoint.eraPoints.toString();
-    eraPoints.validators = JSON.stringify(erasPoint.validators);
-    await eraPoints.save();
-  }
 }
 
 export async function handleEraPrefs() {
