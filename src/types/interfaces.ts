@@ -2,67 +2,51 @@
 
 // Auto-generated , DO NOT EDIT
 
-export interface CommissionHistory {
-
-    era?: string;
-
-    commission?: string;
-
-}
-
-
-export interface EraPointsHistory {
-
-    era?: string;
-
-    points?: number;
-
-}
-
-
-export interface PerformanceHistory {
-
-    era?: string;
-
-    performance?: number;
-
-}
-
-
-export interface PayoutHistory {
-
-    era?: string;
-
-    status?: string;
-
-}
-
-
-export interface StakeHistory {
-
-    era?: string;
-
-    self?: string;
-
-    others?: string;
+export interface Exposure {
 
     total?: string;
 
-}
+    own?: string;
 
-
-export interface IdentityField {
-
-    Identity?: Identity;
+    others?: number;
 
 }
 
 
-export interface Identity {
+export interface Others {
 
-    display?: string;
+    who?: string;
 
-    legal?: string;
+    value?: string;
+
+}
+
+
+export interface StakingLedger {
+
+    stash?: string;
+
+    total?: number;
+
+    active?: number;
+
+    claimedRewards?: number[];
+
+}
+
+
+export interface ValidatorPrefs {
+
+    commission?: string;
+
+    blocked?: boolean;
+
+}
+
+
+export interface Vote {
+
+    accountId?: string;
 
 }
 

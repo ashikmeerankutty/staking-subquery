@@ -13,7 +13,47 @@ dataSources:
     startBlock: 8000000
     mapping:
       handlers:
-        - handler: handleBlock
+        - handler: handleValidatorAddress
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession
+        - handler: handleEraSlashes
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession
+        - handler: handleCouncilVotes
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession
+        - handler: handleReferendums
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession
+        - handler: handleProposals
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession
+        - handler: handleEraPoints
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession
+        - handler: handleEraPrefs
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession
+        - handler: handleNominations
+          kind: substrate/EventHandler
+          filter:
+            module: session
+            method: NewSession
+        - handler: handleMaxNominatorRewardedPerValidator
           kind: substrate/EventHandler
           filter:
             module: session
