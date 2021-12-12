@@ -20,3 +20,11 @@ export {Nomination} from "./Nomination"
 
 export {MaxNominatorRewardedPerValidator} from "./MaxNominatorRewardedPerValidator"
 
+export {SumReward} from "./SumReward"
+
+export {NoBondRecordAccount} from "./NoBondRecordAccount"
+
+export {StakingReward} from "./StakingReward"
+
+export {StakingSlash} from "./StakingSlash"
+

@@ -132,3 +132,4 @@ export async function handleMaxNominatorRewardedPerValidator() {
     maxNominatorRewardedPerValidator.toNumber();
   await maxNominatorRewardedPerValidatorEnity.save();
 }
+
